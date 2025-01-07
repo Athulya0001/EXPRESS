@@ -21,6 +21,7 @@ mongoose
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
+  email: {type: String, unique: true},
 });
 
 const User = mongoose.model("User", userSchema);
@@ -31,7 +32,7 @@ app.get("/", (req, res) => {
 app.post("/add", async (req, res) => {
 
 
-    const data = req.body;
+  const data = req.body;
   console.log(req.body, "req body");
   const user = new User(data);
   await user.save();
@@ -40,15 +41,37 @@ app.post("/add", async (req, res) => {
 
 })
 
-app.get("/getData", (req, res) => {
+app.get("/getData", async (req, res) => {
 
 
-  const users = User.find().then((user)=>{
-    res.json(users);
+  const users = await User.find();
+  let html = `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Users</title>
+      </head>
+      <body>
+        <h1>Users List</h1>
+        <ul>
+    `;
 
-    console.log(users,"users")
 
-  });
+    users.forEach((user)=>{
+      html+= `<li>
+        <span>Name: ${user.name}</span>
+        <br>
+        <span>Email: ${user.email}</span>
+        <p>id: ${user._id}</p>
+    </li>`;
+    })
+    html+= `</ul>
+    </body>
+      </html>
+    `;
+    res.send(html);
 
 });
 
