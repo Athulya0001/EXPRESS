@@ -6,12 +6,13 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="/add" method="post">
+    <form action="http://localhost:3000/add" method="post">
         <label for="name">Fullname</label>
-        <input type="text" placeholder="Enter your name" id="name">
-        <button type="submit" onclick="handleSubmit()">Submit</button>
+        <input type="text" placeholder="Enter your name" id="name" name="name">
+        <button type="submit">Submit</button>
     </form>
+    <ul id="list"></ul>
 
-    <script src="script.js"></script>
+    <!-- <script src="script.js"></script> -->
 </body>
 </html>
