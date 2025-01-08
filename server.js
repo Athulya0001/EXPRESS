@@ -1,3 +1,4 @@
+import { name } from "ejs";
 import express, { urlencoded } from "express";
 import mongoose from "mongoose";
 
@@ -26,6 +27,8 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", userSchema);
 
+app.set('view engine', 'ejs');
+
 app.get("/", (req, res) => {
   res.sendFile("index.html");
 });
@@ -37,8 +40,6 @@ app.post("/add", async (req, res) => {
   const user = new User(data);
   await user.save();
   res.send("User added successfully");
-
-
 })
 
 app.get("/getData", async (req, res) => {
@@ -78,3 +79,9 @@ app.get("/getData", async (req, res) => {
 app.get("/todo", (req, res) => {
   res.send("rendered add path");
 });
+
+app.get("/new", async(req, res)=>{
+  const user = await User.find();
+  console.log(user, 'users')
+  res.render('index.ejs', {user});
+})
